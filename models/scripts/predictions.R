@@ -1,0 +1,223 @@
+#setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) ## Sets your working directory to wherever this file is located
+#setwd("..") ## Since this file should be in ./scripts, this moves you to the main replication directory
+
+
+## Loading libraries
+library(gbm)
+library(gdata)
+library(tidyverse)
+library(foreign)
+library(glmnet)
+library(boot)
+library(randomForest)
+library(RTextTools)
+library(e1071)
+library(extraTrees)
+library(mboost)
+library(xtable)
+
+## Let's start with civil wars
+# Prep the data:
+dat = read.dta("./data/repdata.dta")
+dat = dat[,-c(1,2,3,4,6,13,16,25)]
+dat[is.na(dat)] <- 0
+
+
+k=5
+idx = sample(1:k, nrow(dat), replace=T)
+
+
+gbm_preds = rep(NA, 6610)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  gbm(war ~ ., data=train, n.trees=100, distribution = "bernoulli",
+           interaction.depth=4, bag.fraction=0.5, shrinkage = 0.001)
+  preds = predict(m, newdata=test, n.trees=100)
+  gbm_preds[idx==i] = preds
+  print(i)
+}
+hist(gbm_preds)# look for the natural cutoff
+gbm_preds2 = gbm_preds > -1.8
+
+gbm_civ = mean(as.numeric(gbm_preds2)==dat$war) 
+
+
+erf_preds = rep(NA, 6610)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  extraTrees(y = train$war, x=train[,-2], ntree=100)
+  preds = predict(m, newdata=test[,-2])
+  erf_preds[idx==i] = preds
+  print(i)
+}
+hist(erf_preds)# look for the natural cutoff
+erf_preds2 = erf_preds > 0.2
+erf_civ = mean(as.numeric(erf_preds2)==dat$war) 
+
+
+lasso_preds = rep(NA, 6610)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  glmnet(y=as.numeric(train$war), x=as.matrix(train[,-2]), family="binomial")
+  preds = predict(m, newx=as.matrix(test[,-2]),type="class")
+  lasso_preds[idx==i] = preds
+  print(i)
+}
+lasso_civ = mean(as.numeric(lasso_preds)==dat$war) 
+
+
+glm_preds = rep(NA, 6610)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m = glm(war ~., family="binomial", data=train)
+  preds = predict(m, newdata=test)
+  glm_preds[idx==i] = preds
+  print(i)
+}
+hist(glm_preds)# look for the natural cutoff
+glm_preds2 = glm_preds > 0
+glm_civ = mean(as.numeric(glm_preds2)==dat$war) 
+
+
+rf_preds = rep(NA, 6610)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  randomForest(war ~ ., data=train, ntree=100)
+  preds = predict(m, newdata=test, ntree=100)
+  rf_preds[idx==i] = preds
+  print(i)
+}
+hist(rf_preds)# look for the natural cutoff
+rf_preds2 = rf_preds > .2
+rf_civ = mean(as.numeric(rf_preds2)==dat$war) 
+
+
+svm_preds = rep(NA, 6610)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  svm(war ~., data=train)
+  preds = predict(m, newdata=test)
+  svm_preds[idx==i] = preds
+  print(i)
+}
+hist(svm_preds)# look for the natural cutoff
+svm_preds2 = svm_preds > .2
+svm_civ = mean(as.numeric(svm_preds2)==dat$war) 
+
+
+## Store them all
+civ = c(gbm_civ, rf_civ, svm_civ, erf_civ, lasso_civ, glm_civ, mean(dat$war==0))
+gdata::keep(civ, sure=T)
+
+
+
+
+## Next let's do US Presidential Elections
+load("./data/County_Presidential_Election_Data_2016_0_0_2_b.RData")
+covars = read.csv("./data/county_facts.csv")
+dat = merge(x, covars, by.x="FIPS", by.y="fips")
+
+dat$y = as.numeric(dat$Hillary.Clinton)/as.numeric(dat$Total.Vote)
+dat = dat[,-c(1:39)]
+dat= dat[!is.na(dat$y),]
+k=5
+idx = sample(1:k, nrow(dat), replace=T)
+dat$y = dat$y > 0.5
+y2 = dat$y > 0.5
+dat$y = factor(as.numeric(dat$y))
+
+
+glm_preds = rep(NA, 3082)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  glm(y ~., data=train, family="binomial")
+  preds = predict(m, newdata=test)
+  glm_preds[idx==i] = preds
+  print(i)
+}
+hist(glm_preds)
+glm_preds2 = glm_preds> 0
+glm_pres = mean(glm_preds2==y2)
+
+
+rf_preds = rep(NA, 3082)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  randomForest(y ~., data=train, ntree=5000)
+  preds = predict(m, newdata=test, ntree=5000)
+  rf_preds[idx==i] = preds
+  print(i)
+}
+hist(rf_preds)
+rf_preds2 = rf_preds > 1.5
+rf_pres = mean(rf_preds2 == y2)
+
+svm_preds = rep(NA, 3082)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  svm(y ~., data=train)
+  preds = predict(m, newdata=test, probability=F)
+  svm_preds[idx==i] = preds
+  print(i)
+}
+svm_pres = mean(svm_preds-1==dat$y) 
+
+lasso_preds = rep(NA, 3082)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  glmnet(y=as.numeric(train$y), x=as.matrix(train[,-52]), family="binomial")
+  preds = predict(m, newx=as.matrix(test[,-52]), type="class")[,40]
+  lasso_preds[idx==i] = preds
+  print(i)
+}
+lasso_pres = mean(lasso_preds == y2+1)
+
+options(java.parameters = "-Xmx16000m")
+erf_preds = rep(NA, 3082)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  m =  extraTrees(y = train$y, x=train[,-52], ntree=1000)
+  preds = predict(m, newdata=test[,-52])
+  erf_preds[idx==i] = preds
+  print(i)
+  gc()
+  .jcall("java/lang/System", method = "gc")
+}
+hist(erf_preds)
+erf_pres = mean(erf_preds == y2+1)
+
+
+gbm_preds = rep(NA, 3082)
+for(i in 1:k){
+  train = dat[idx!=i,]
+  test = dat[idx==i,]
+  train$y = as.character(as.factor(train$y))
+  m =  gbm(y ~., data=train, n.trees=5000, interaction.depth=3,
+           bag.fraction=0.4, shrinkage = 0.005, distribution="bernoulli")
+  preds = predict(m, newdata=test, n.trees=5000, type="link")
+  gbm_preds[idx==i] <- preds
+  print(i)
+}
+gbm_pres= mean((gbm_preds>0) == y2)
+hist(gbm_preds) # 0.923
+
+baseline_pres = mean(dat$y==0) 
+
+method = c("ADTs", "Random Forest", "Support Vector Machines",
+           "Extremely Random Trees", "LASSO", "Logistic Regression", 
+           "Baseline")
+elec = c(gbm_pres, rf_pres, svm_pres, erf_pres, lasso_pres, glm_pres, baseline_pres)
+
+tab = data.frame(Method=method, `Elections Accuracy`=elec, `Civil Wars Accuracy`=civ)
+print(xtable(tab, digits=3), include.rownames=FALSE, file="./tables/table3.tex")

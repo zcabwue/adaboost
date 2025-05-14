@@ -1,0 +1,75 @@
+run_model_boost.main("all")
+{'mean_fit_time': array([266.73542106]), 'std_fit_time': array([27.68742042]), 'mean_score_time': array([18.66980913]), 'std_score_time': array([3.40412492]), 'params': [{}], 'split0_test_score': array([0.78571429]), 'split1_test_score': array([0.75714286]), 'split2_test_score': array([0.77142857]), 'split3_test_score': array([0.8]), 'split4_test_score': array([0.68571429]), 'split5_test_score': array([0.74285714]), 'split6_test_score': array([0.7]), 'split7_test_score': array([0.55072464]), 'split8_test_score': array([0.84057971]), 'split9_test_score': array([0.75362319]), 'mean_test_score': array([0.73877847]), 'std_test_score': array([0.07592012]), 'rank_test_score': array([1])}      
+AdaBoostClassifier(estimator=ExtraTreesClassifier(bootstrap=True, max_depth=3,
+                                                  max_features=None,
+                                                  min_samples_leaf=5,
+                                                  min_weight_fraction_leaf=0,
+                                                  n_estimators=10000,
+                                                  n_jobs=2),
+                   n_estimators=10000)
+Best parameters set:
+Test accuracy score: 73.88%
+run_model_boost.main("scdb")
+
+run_model_boost.main("oa")
+
+
+
+dup_model_mplus.main("all")
+{'mean_fit_time': array([1.10540619]), 'std_fit_time': array([0.0190414]), 'mean_score_time': array([0.10289376]), 'std_score_time': array([0.00638646]), 'params': [{}], 'split0_test_score': array([0.75714286]), 'split1_test_score': array([0.72857143]), 'split2_test_score': array([0.74285714]), 'split3_test_score': array([0.78571429]), 'split4_test_score': array([0.67142857]), 'split5_test_score': array([0.72857143]), 'split6_test_score': array([0.62857143]), 'split7_test_score': array([0.56521739]), 'split8_test_score': array([0.75362319]), 'split9_test_score': array([0.76811594]), 'mean_test_score': array([0.71298137]), 'std_test_score': array([0.0663298]), 'rank_test_score': array([1])}
+AdaBoostClassifier(estimator=ExtraTreesClassifier(class_weight='balanced_subsample',
+                                                  n_estimators=1000, n_jobs=-1,
+                                                  warm_start=True),
+                   n_estimators=1000)
+Best parameters set:
+Test accuracy score: 71.30%
+dup_model_mplus.main("scdb")
+
+
+dup_model_mplus.main("oa")
+{'mean_fit_time': array([0.96930816]), 'std_fit_time': array([0.08707964]), 'mean_score_time': array([0.09389398]), 'std_score_time': array([0.00161099]), 'params': [{}], 'split0_test_score': array([0.77142857]), 'split1_test_score': array([0.74285714]), 'split2_test_score': array([0.74285714]), 'split3_test_score': array([0.75714286]), 'split4_test_score': array([0.71428571]), 'split5_test_score': array([0.7]), 'split6_test_score': array([0.64285714]), 'split7_test_score': array([0.53623188]), 'split8_test_score': array([0.76811594]), 'split9_test_score': array([0.73913043]), 'mean_test_score': array([0.71149068]), 'std_test_score': array([0.06868829]), 'rank_test_score': array([1])}   
+AdaBoostClassifier(estimator=ExtraTreesClassifier(class_weight='balanced_subsample',
+                                                  n_estimators=1000, n_jobs=-1,
+                                                  warm_start=True),
+                   n_estimators=1000)
+Best parameters set:
+Test accuracy score: 71.15%
+
+
+
+dup_model_courtcast.main("all")
+{'mean_fit_time': array([1.10739596]), 'std_fit_time': array([0.18008742]), 'mean_score_time': array([0.0013464]), 'std_score_time': array([0.00259907]), 'params': [{}], 'split0_test_score': array([0.78571429]), 'split1_test_score': array([0.75714286]), 'split2_test_score': array([0.77142857]), 'split3_test_score': array([0.75714286]), 'split4_test_score': array([0.64285714]), 'split5_test_score': array([0.75714286]), 'split6_test_score': array([0.74285714]), 'split7_test_score': array([0.56521739]), 'split8_test_score': array([0.7826087]), 'split9_test_score': array([0.73913043]), 'mean_test_score': array([0.73012422]), 'std_test_score': array([0.06692831]), 'rank_test_score': array([1])}
+SVC(kernel='linear', probability=True)
+Best parameters set:
+Test accuracy score: 73.01%
+dup_model_courtcast.main("scdb")
+{'mean_fit_time': array([0.05825579]), 'std_fit_time': array([0.01106399]), 'mean_score_time': array([0.00025427]), 'std_score_time': array([0.00052933]), 'params': [{}], 'split0_test_score': array([0.71428571]), 'split1_test_score': array([0.62857143]), 'split2_test_score': array([0.67142857]), 'split3_test_score': array([0.74285714]), 'split4_test_score': array([0.68571429]), 'split5_test_score': array([0.68571429]), 'split6_test_score': array([0.65714286]), 'split7_test_score': array([0.52173913]), 'split8_test_score': array([0.66666667]), 'split9_test_score': array([0.65217391]), 'mean_test_score': array([0.6626294]), 'std_test_score': array([0.05604806]), 'rank_test_score': array([1])}
+SVC(kernel='linear', probability=True)
+Best parameters set:
+Test accuracy score: 66.26%
+dup_model_courtcast.main("oa")
+{'mean_fit_time': array([0.74505868]), 'std_fit_time': array([0.102689]), 'mean_score_time': array([0.00138228]), 'std_score_time': array([0.00303733]), 'params': [{}], 'split0_test_score': array([0.78571429]), 'split1_test_score': array([0.78571429]), 'split2_test_score': array([0.75714286]), 'split3_test_score': array([0.72857143]), 'split4_test_score': array([0.65714286]), 'split5_test_score': array([0.77142857]), 'split6_test_score': array([0.68571429]), 'split7_test_score': array([0.53623188]), 'split8_test_score': array([0.75362319]), 'split9_test_score': array([0.75362319]), 'mean_test_score': array([0.72149068]), 'std_test_score': array([0.0733967]), 'rank_test_score': array([1])}
+SVC(kernel='linear', probability=True)
+Best parameters set:
+Test accuracy score: 72.15%
+
+
+
+
+dup_model_naive.main("all")
+{'mean_fit_time': array([1.98276434]), 'std_fit_time': array([0.06947677]), 'mean_score_time': array([0.03898921]), 'std_score_time': array([0.00818069]), 'params': [{}], 'split0_test_score': array([0.78571429]), 'split1_test_score': array([0.75714286]), 'split2_test_score': array([0.71428571]), 'split3_test_score': array([0.74285714]), 'split4_test_score': array([0.68571429]), 'split5_test_score': array([0.71428571]), 'split6_test_score': array([0.65714286]), 'split7_test_score': array([0.56521739]), 'split8_test_score': array([0.73913043]), 'split9_test_score': array([0.76811594]), 'mean_test_score': array([0.71296066]), 'std_test_score': array([0.06128254]), 'rank_test_score': array([1])}
+RandomForestClassifier(n_estimators=1000)
+Best parameters set:
+Test accuracy score: 71.30%
+
+dup_model_naive.main("scdb")
+{'mean_fit_time': array([1.16619771]), 'std_fit_time': array([0.06891377]), 'mean_score_time': array([0.03692231]), 'std_score_time': array([0.00433612]), 'params': [{}], 'split0_test_score': array([0.67142857]), 'split1_test_score': array([0.55714286]), 'split2_test_score': array([0.64285714]), 'split3_test_score': array([0.64285714]), 'split4_test_score': array([0.62857143]), 'split5_test_score': array([0.67142857]), 'split6_test_score': array([0.65714286]), 'split7_test_score': array([0.55072464]), 'split8_test_score': array([0.55072464]), 'split9_test_score': array([0.57971014]), 'mean_test_score': array([0.6152588]), 'std_test_score': array([0.04768166]), 'rank_test_score': array([1])}
+RandomForestClassifier(n_estimators=1000)
+Best parameters set:
+Test accuracy score: 61.53%
+
+dup_model_naive.main("oa")
+{'mean_fit_time': array([1.87389908]), 'std_fit_time': array([0.06346317]), 'mean_score_time': array([0.0358511]), 'std_score_time': array([0.00683726]), 'params': [{}], 'split0_test_score': array([0.75714286]), 'split1_test_score': array([0.72857143]), 'split2_test_score': array([0.71428571]), 'split3_test_score': array([0.72857143]), 'split4_test_score': array([0.68571429]), 'split5_test_score': array([0.7]), 'split6_test_score': array([0.64285714]), 'split7_test_score': array([0.49275362]), 'split8_test_score': array([0.73913043]), 'split9_test_score': array([0.73913043]), 'mean_test_score': array([0.69281573]), 'std_test_score': array([0.07353145]), 'rank_test_score': array([1])}    
+RandomForestClassifier(n_estimators=1000)
+Best parameters set:
+Test accuracy score: 69.28%

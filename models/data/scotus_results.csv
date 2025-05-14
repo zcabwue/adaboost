@@ -1,0 +1,13 @@
+model	data	acc
+KKS	scdb	0.6554
+KKS	oa	0.7186
+KKS	both	0.7388
+M+	scdb	0.5407
+M+	oa	0.7115
+M+	both	0.7130
+CC	scdb	0.6626
+CC	oa	0.7215
+CC	both	0.7301
+RF	scdb	0.6153
+RF	oa	0.6928
+RF	both	0.7130
